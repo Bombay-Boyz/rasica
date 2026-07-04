@@ -1,0 +1,154 @@
+# RASICA
+
+> **Rule-based Autonomous Statistical Inference and Computational Analytics**
+
+RASICA is a deterministic analytical reasoning engine for structured data.
+
+Unlike traditional analytics platforms, RASICA does not require users to decide which statistical analyses should be performed. Instead, it constructs an analytical workflow automatically using deterministic rules, mathematical correctness, statistical validity, and domain knowledge.
+
+RASICA is **not** an AI system. It does not depend on machine learning, large language models, or probabilistic reasoning to produce analytical conclusions. Every analytical decision is explainable, reproducible, and auditable.
+
+---
+
+## Vision
+
+Create a new class of analytical software built on deterministic reasoning rather than user-directed analysis or probabilistic AI.
+
+RASICA transforms validated structured datasets into objective, reproducible, mathematically defensible analytical reports.
+
+---
+
+## Core Principles
+
+- Deterministic execution
+- Explainable analytical reasoning
+- Mathematical correctness
+- Statistical validity
+- Modular architecture
+- Domain independence
+- Complete auditability
+- High performance
+- Extensibility through domain modules
+
+---
+
+## Architecture
+
+RASICA follows:
+
+- Clean Architecture
+- Hexagonal Architecture
+
+The analytical pipeline consists of:
+
+```
+Dataset
+    ↓
+Validation
+    ↓
+Structural Inference
+    ↓
+Knowledge Graph
+    ↓
+Capability Discovery
+    ↓
+Rule Engine
+    ↓
+Analysis Planner
+    ↓
+Execution Engine
+    ↓
+Reporting
+```
+
+The Core Engine remains completely domain-independent.
+
+Domain-specific knowledge is supplied through independent Domain Modules.
+
+---
+
+## Features
+
+- Deterministic analytical workflow generation
+- Rule-based reasoning engine
+- Statistical analysis engine
+- Mathematical computation engine
+- Knowledge graph construction
+- Domain module framework
+- Explainable analysis
+- Immutable execution model
+- Complete audit trail
+- Multiple report renderers
+
+---
+
+## Planned Data Sources
+
+- CSV
+- Excel
+- JSON
+- SQL
+- Apache Arrow
+- Apache Parquet
+
+---
+
+## Planned Output Formats
+
+- Terminal
+- Markdown
+- HTML
+- PDF
+- SVG
+- PNG
+- JSON
+
+---
+
+## Technology Stack
+
+- Rust
+- Cargo
+- Clean Architecture
+- Hexagonal Architecture
+
+---
+
+## Repository Structure
+
+```
+rasica/
+├── crates/
+├── docs/
+│   └── architecture/
+├── examples/
+├── tests/
+├── benches/
+├── scripts/
+├── Cargo.toml
+└── README.md
+```
+
+---
+
+## Project Status
+
+This project is currently in active architecture and implementation.
+
+The Architecture Specification is the constitutional document governing all future development.
+
+---
+
+## Documentation
+
+- Architecture Specification
+- Domain SDK
+- Contributor Guide
+- Coding Standards
+- ADRs (Architecture Decision Records)
+
+---
+
+## License
+
+License to be announced.

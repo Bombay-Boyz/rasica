@@ -1,0 +1,52 @@
+# Rust
+/target/
+Cargo.lock
+
+# IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Coverage
+coverage/
+*.profraw
+*.profdata
+
+# Benchmarks
+criterion/
+
+# Generated documentation
+/book/
+/site/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.orig
+
+# Cargo
+**/*.rs.bk
+
+# Rust Analyzer
+.rust-analyzer/
+
+# Testing
+*.gcda
+*.gcno
+
+# Misc
+.cache/
