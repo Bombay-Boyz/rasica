@@ -1,6 +1,56 @@
-[package]
-name = "rasika"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "2"
+members = [
+    "crates/rasica-common",
+    "crates/rasica-core",
+    "tests/workspace_smoke",
+]
 
-[dependencies]
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.78"
+authors = ["RASICA Architecture Team"]
+license = "Apache-2.0"
+repository = "https://github.com/rasica-project/rasica"
+publish = false
+
+[workspace.dependencies]
+# --- error handling (§14.9) ---
+thiserror = "1.0"
+
+# --- deterministic fingerprinting (§6.2A, §4.1) ---
+blake3 = "1.5"
+
+# --- versioning (§14.16) ---
+semver = "1.0"
+
+# --- configuration (§14.10) ---
+figment = { version = "0.10", features = ["toml", "env"] }
+serde = { version = "1.0", features = ["derive"] }
+
+# --- logging (§14.6 Rust Engineering Principles context) ---
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# --- identifiers ---
+uuid = { version = "1.8", features = ["v4", "serde"] }
+
+# --- testing (§14.13) ---
+proptest = "1.4"
+rstest = "0.19"
+
+[workspace.lints.rust]
+missing_docs = "warn"                 # promoted to deny in CI, see §7
+unsafe_code = "forbid"
+unused_must_use = "deny"
+rust_2018_idioms = { level = "warn", priority = -1 }
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Exceptions to pedantic, justified individually rather than blanket-suppressed:
+module_name_repetitions = "allow"     # e.g. `error::Error` re-exported as `Error` is idiomatic and intended
+must_use_candidate = "allow"          # noisy on internal builder methods; revisited per-crate if needed
+unwrap_used = "deny"                  # §14.9: panics must be deliberate, never an unexamined default
+expect_used = "warn"                  # allowed only with a message proving the invariant, see §4.4 below

@@ -1,0 +1,32 @@
+[graph]
+targets = []
+
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+ignore = []
+
+# deny.toml
+[licenses]
+allow = [
+    "Apache-2.0",
+    "MIT",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+]
+confidence-threshold = 0.8
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+deny = [
+    # No crate in the dependency tree may itself pull in unreviewed unsafe-heavy
+    # FFI crates in Phase 1; extend this list as new dependencies are justified (§14.7).
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

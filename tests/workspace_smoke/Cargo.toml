@@ -1,0 +1,16 @@
+# tests/workspace_smoke/Cargo.toml
+[package]
+name = "workspace-smoke"
+description = "Cross-crate smoke tests verifying the Phase 1 workspace composes correctly."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+rasica-common = { path = "../../crates/rasica-common", version = "0.1.0" }
+rasica-core = { path = "../../crates/rasica-core", version = "0.1.0" }

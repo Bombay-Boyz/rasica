@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+  RUSTDOCFLAGS: "-D warnings"
+
+jobs:
+  fmt:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  clippy:
+    name: Lint (clippy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      # Missing docs are `warn` at the crate level (§3.2) so local
+      # development isn't blocked mid-edit, and promoted to a hard failure
+      # here via RUSTFLAGS/RUSTDOCFLAGS above, satisfying §15.4's exit
+      # criterion "coding standards enforced".
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+
+  test:
+    name: Test (nextest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@nextest
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo nextest run --workspace --profile ci
+
+  doc:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo doc --workspace --no-deps --document-private-items
+
+  audit:
+    name: Dependency & Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@cargo-deny
+      - run: cargo deny check
+
+  benchmark-regression:
+    name: Benchmark Regression Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # No benchmarks exist yet: Phase 1 introduces no analytical or
+      # performance-sensitive code (Appendix H's targets apply from Phase 2
+      # onward). This job is retained as a placeholder, per Architecture
+      # Spec §14.14, so the pipeline's job list already matches the full
+      # required set and no later phase needs to restructure `ci.yml` to
+      # "add" this requirement — only to give it a real body (`cargo
+      # bench` + a stored baseline comparison).
+      - run: echo "No benchmarks defined in Phase 1; see Appendix H and §14.15."
+
+  msrv:
+    name: Minimum Supported Rust Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: msrv
+        run: echo "version=$(cat .rust-version)" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.msrv.outputs.version }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --workspace

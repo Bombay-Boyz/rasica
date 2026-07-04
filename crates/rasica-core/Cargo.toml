@@ -1,0 +1,21 @@
+[package]
+name = "rasica-core"
+description = "Core Architectural Object vocabulary: mutability tiers, identity, and deterministic fingerprinting."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+# crates/rasica-core/Cargo.toml
+[dependencies]
+rasica-common = { path = "../rasica-common", version = "0.1.0" }
+blake3 = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
