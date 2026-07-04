@@ -96,6 +96,11 @@ pub enum LogFormat {
 /// Reports which [`EngineVersion`] built this configuration schema, so that
 /// a persisted config (or an Audit Record referencing one, §6.15) can be
 /// checked for compatibility with the engine reading it back.
+///
+/// # Panics
+///
+/// Panics if `CARGO_PKG_VERSION` (set by Cargo at build time) is not a
+/// valid semver string, which cannot happen for a correctly built crate.
 #[must_use]
 #[allow(clippy::expect_used)]
 pub fn schema_engine_version() -> EngineVersion {

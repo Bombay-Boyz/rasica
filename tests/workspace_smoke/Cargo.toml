@@ -14,3 +14,4 @@ workspace = true
 [dependencies]
 rasica-common = { path = "../../crates/rasica-common", version = "0.1.0" }
 rasica-core = { path = "../../crates/rasica-core", version = "0.1.0" }
+rasica-dataset = { path = "../../crates/rasica-dataset", version = "0.1.0" }

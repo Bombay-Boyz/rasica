@@ -64,6 +64,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[allow(clippy::expect_used)]
     fn range_matches_within_bounds() {
         let range = EngineVersionRange::parse(">=1.0.0, <2.0.0")
             .expect("literal in test is a valid semver requirement");

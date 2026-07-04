@@ -69,14 +69,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # No benchmarks exist yet: Phase 1 introduces no analytical or
-      # performance-sensitive code (Appendix H's targets apply from Phase 2
-      # onward). This job is retained as a placeholder, per Architecture
-      # Spec §14.14, so the pipeline's job list already matches the full
-      # required set and no later phase needs to restructure `ci.yml` to
-      # "add" this requirement — only to give it a real body (`cargo
-      # bench` + a stored baseline comparison).
-      - run: echo "No benchmarks defined in Phase 1; see Appendix H and §14.15."
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      # Phase 2 gives this job its first real body (Document 00A §7.2's
+      # placeholder). It runs the fixed-shape benchmark defined in §5.4 of
+      # the Phase 2 Implementation Specification and stores the result as
+      # this job's artifact; comparing successive runs for regression
+      # (rather than only recording them) is deferred to the Benchmarking
+      # Specification (Appendix E item 24), which is expected to define the
+      # reference machine and comparison policy this job will enforce.
+      - run: cargo bench --workspace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: criterion-results
+          path: target/criterion
 
   msrv:
     name: Minimum Supported Rust Version

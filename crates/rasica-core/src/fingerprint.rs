@@ -17,7 +17,7 @@ use std::fmt;
 /// (e.g. via a `BuildHasherDefault` over a non-randomising hasher) rather
 /// than re-hashing it with a randomised hasher that would reintroduce the
 /// very non-determinism this type exists to avoid.
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Fingerprint([u8; 32]);
 
 impl Fingerprint {

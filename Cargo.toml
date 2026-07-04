@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "crates/rasica-common",
     "crates/rasica-core",
+    "crates/rasica-dataset",
     "tests/workspace_smoke",
 ]
 
@@ -39,6 +40,9 @@ uuid = { version = "1.8", features = ["v4", "serde"] }
 # --- testing (§14.13) ---
 proptest = "1.4"
 rstest = "0.19"
+
+# --- benchmarking (§14.15; first real consumer: rasica-dataset benches) ---
+criterion = { version = "0.5", features = ["html_reports"] }
 
 [workspace.lints.rust]
 missing_docs = "warn"                 # promoted to deny in CI, see §7

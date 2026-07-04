@@ -28,10 +28,7 @@ pub struct Id<T> {
 }
 
 impl<T> Id<T> {
-    /// Generates a new, random `Id`.
-    ///
-    
-    /// from any code path that participates in Logical Determinism
+    /// Generates a new, random `Id`
     /// (Architecture Spec §4.1): identifiers name objects, they do not
     /// influence which analytical operations are selected or in what order
     /// rules apply. Any object whose *content* (not just its identity) must
@@ -147,6 +144,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::expect_used)]
     fn round_trips_through_string() {
         let original: Id<RuleMarker> = Id::new();
         let parsed: Id<RuleMarker> = original.to_string().parse().expect(

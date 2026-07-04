@@ -51,3 +51,42 @@ fn objects_with_equal_content_fingerprint_equally_regardless_of_identity() {
     assert_ne!(a.id(), b.id());
     assert_eq!(a.fingerprint(), b.fingerprint());
 }
+
+mod dataset_composes_with_core_vocabulary {
+    use rasica_core::prelude::*;
+    use rasica_dataset::prelude::*;
+
+    #[allow(clippy::expect_used)]
+    fn sample_dataset() -> Dataset {
+        let schema = Schema::new(vec![
+            Column::new("id", ColumnType::Integer),
+            Column::new("label", ColumnType::Text),
+        ])
+        .expect("well-formed schema in test fixture");
+
+        let mut builder = DatasetBuilder::new(schema);
+        builder
+            .push_row(Row::new(vec![Value::Integer(1), Value::Text("a".into())]))
+            .expect("well-formed row in test fixture");
+
+        builder.build(SourceMetadata::new(SourceFormat::InMemory, "test-fixture"))
+    }
+
+    #[test]
+    fn dataset_is_identifiable_and_fingerprintable() {
+        let dataset = sample_dataset();
+        let _ = dataset.id();
+        let _ = dataset.fingerprint();
+    }
+
+    #[test]
+    fn metadata_derives_from_dataset_without_mutating_it() {
+        let dataset = sample_dataset();
+        let metadata = Metadata::derive(&dataset);
+        assert_eq!(metadata.columns().len(), dataset.schema().arity());
+        // Deriving Metadata does not require, and cannot obtain, `&mut
+        // Dataset` — this is checked by the type signature of
+        // `Metadata::derive(&Dataset)` compiling at all, not by an
+        // assertion here.
+    }
+}
