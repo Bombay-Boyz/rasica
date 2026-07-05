@@ -966,6 +966,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "rasica-validation"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "proptest",
+ "rasica-common",
+ "rasica-core",
+ "rasica-dataset",
+ "rstest",
+ "thiserror",
+]
+
+[[package]]
 name = "rayon"
 version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1587,6 +1600,7 @@ dependencies = [
  "rasica-core",
  "rasica-dataset",
  "rasica-ingestion",
+ "rasica-validation",
 ]
 
 [[package]]

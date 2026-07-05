@@ -5,6 +5,7 @@ members = [
     "crates/rasica-core",
     "crates/rasica-dataset",
     "crates/rasica-ingestion",
+    "crates/rasica-validation",
     "tests/workspace_smoke",
 ]
 

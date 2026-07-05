@@ -1,0 +1,28 @@
+[package]
+name = "rasica-validation"
+description = "Structural validation (schema, datatype, null, duplicate, integrity, constraint) producing an immutable Validation Report."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+rasica-common = { path = "../rasica-common", version = "0.1.0" }
+rasica-core = { path = "../rasica-core", version = "0.1.0" }
+rasica-dataset = { path = "../rasica-dataset", version = "0.1.0" }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
+rstest = { workspace = true }
+criterion = { workspace = true }
+
+[[bench]]
+name = "validation"
+harness = false

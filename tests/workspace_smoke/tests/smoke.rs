@@ -108,3 +108,42 @@ fn ingests_a_csv_fixture_into_an_immutable_dataset() {
     assert_eq!(dataset.schema().arity(), 2);
     assert_immutable(&dataset);
 }
+
+#[test]
+#[allow(clippy::expect_used, clippy::items_after_statements)]
+fn validates_a_hand_built_dataset_and_flags_a_duplicate_row() {
+    use rasica_dataset::{
+        dataset::DatasetBuilder,
+        row::Row,
+        schema::{Column, ColumnType, Schema},
+        source::{SourceFormat, SourceMetadata},
+        value::Value,
+    };
+    use rasica_validation::{validate, ValidationOptions};
+
+    let schema = Schema::new(vec![
+        Column::new("id", ColumnType::Integer),
+        Column::new("label", ColumnType::Text),
+    ])
+    .expect("hand-written schema is well-formed");
+
+    let mut builder = DatasetBuilder::new(schema);
+    builder
+        .push_row(Row::new(vec![Value::Integer(1), Value::Text("alpha".into())]))
+        .expect("hand-written row matches hand-written schema");
+    builder
+        .push_row(Row::new(vec![Value::Integer(1), Value::Text("alpha".into())]))
+        .expect("hand-written row matches hand-written schema");
+    let dataset = builder.build(SourceMetadata::new(SourceFormat::InMemory, "smoke"));
+
+    let report = validate(&dataset, "smoke", &[], &ValidationOptions::default());
+
+    assert!(!report.is_structurally_valid());
+    assert!(report
+        .failures()
+        .any(|f| f.category() == rasica_validation::finding::ValidationCategory::Duplicate));
+
+    // Reuses Document 00B's own smoke assertion pattern: Validation Report is Tier 1.
+    fn assert_immutable<T: rasica_core::prelude::Immutable>(_: &T) {}
+    assert_immutable(&report);
+}
