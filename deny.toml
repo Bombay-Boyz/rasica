@@ -5,7 +5,18 @@ targets = []
 db-path = "~/.cargo/advisory-db"
 db-urls = ["https://github.com/rustsec/advisory-db"]
 yanked = "deny"
-ignore = []
+ignore = [
+    # RUSTSEC-2026-0194 / RUSTSEC-2026-0195: quick-xml < 0.41 DoS advisories,
+    # reached transitively via calamine (all releases through 0.35.0 pin
+    # quick-xml ^0.39, below the fixed 0.41.0). No calamine release currently
+    # resolves this. Accepted as a known, tracked gap for Phase 3's Excel
+    # reader, which does process externally-sourced .xlsx files and is
+    # therefore in this advisory's actual threat model — this is a real risk,
+    # not a false positive, and should be revisited (`cargo deny check`) once
+    # calamine ships a release depending on quick-xml >= 0.41.
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
+]
 
 # deny.toml
 [licenses]

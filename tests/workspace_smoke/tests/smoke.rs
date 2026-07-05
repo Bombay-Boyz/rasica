@@ -90,3 +90,21 @@ mod dataset_composes_with_core_vocabulary {
         // assertion here.
     }
 }
+
+#[test]
+#[allow(clippy::expect_used)]
+fn ingests_a_csv_fixture_into_an_immutable_dataset() {
+    fn assert_immutable<T: rasica_core::prelude::Immutable>(_: &T) {} // ← move this line up here
+
+    let csv_bytes = b"id,label\n1,alpha\n2,beta\n".as_slice();
+    let dataset = rasica_ingestion::csv::read(
+        csv_bytes,
+        "inline-fixture",
+        rasica_ingestion::csv::CsvOptions::default(),
+    )
+    .expect("inline CSV literal is well-formed");
+
+    assert_eq!(dataset.row_count(), 2);
+    assert_eq!(dataset.schema().arity(), 2);
+    assert_immutable(&dataset);
+}
