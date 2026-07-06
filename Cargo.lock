@@ -966,6 +966,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "rasica-structural-inference"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "proptest",
+ "rasica-common",
+ "rasica-core",
+ "rasica-dataset",
+ "rasica-ingestion",
+ "rstest",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "rasica-validation"
 version = "0.1.0"
 dependencies = [
@@ -1600,6 +1615,7 @@ dependencies = [
  "rasica-core",
  "rasica-dataset",
  "rasica-ingestion",
+ "rasica-structural-inference",
  "rasica-validation",
 ]
 

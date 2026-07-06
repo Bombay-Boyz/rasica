@@ -1,0 +1,31 @@
+id,name,signup_date,tier,lifetime_value
+1,Ada Lovelace,2020-01-01,bronze,100.00
+2,Grace Hopper,2020-02-02,silver,113.37
+3,Alan Turing,2020-03-03,gold,126.74
+4,Katherine Johnson,2020-04-04,bronze,140.11
+5,Margaret Hamilton,2020-05-05,silver,153.48
+6,Alonzo Church,2020-06-06,gold,166.85
+7,Barbara Liskov,2020-07-07,bronze,180.22
+8,John McCarthy,2020-08-08,silver,193.59
+9,Edsger Dijkstra,2020-09-09,gold,206.96
+10,Donald Knuth,2020-10-10,bronze,220.33
+11,Frances Allen,2020-11-11,silver,233.70
+12,Radia Perlman,2020-12-12,gold,247.07
+13,Vint Cerf,2020-01-13,bronze,260.44
+14,Tim Berners-Lee,2020-02-14,silver,273.81
+15,Linus Torvalds,2020-03-15,gold,287.18
+16,Guido van Rossum,2020-04-16,bronze,300.55
+17,James Gosling,2020-05-17,silver,313.92
+18,Anita Borg,2020-06-18,gold,327.29
+19,Shafi Goldwasser,2020-07-19,bronze,340.66
+20,Whitfield Diffie,2020-08-20,silver,354.03
+21,Martin Hellman,2020-09-21,gold,367.40
+22,Adele Goldberg,2020-10-22,bronze,380.77
+23,Dennis Ritchie,2020-11-23,silver,394.14
+24,Ken Thompson,2020-12-24,gold,407.51
+25,Ada Lovelace,2020-01-25,bronze,420.88
+26,Grace Hopper,2020-02-26,silver,434.25
+27,Alan Turing,2020-03-27,gold,447.62
+28,Katherine Johnson,2020-04-01,bronze,460.99
+29,Margaret Hamilton,2020-05-02,silver,474.36
+30,Alonzo Church,2020-01-01,gold,487.73

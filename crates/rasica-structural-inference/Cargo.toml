@@ -1,0 +1,37 @@
+[package]
+name = "rasica-structural-inference"
+description = "Structural Inference Engine: deterministic identification of identifiers, continuous/categorical/temporal variables, distributions, and relationship evidence, producing immutable Structural Knowledge."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+rasica-common = { path = "../rasica-common", version = "0.1.0" }
+rasica-core = { path = "../rasica-core", version = "0.1.0" }
+rasica-dataset = { path = "../rasica-dataset", version = "0.1.0" }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+# Only this crate's *test suite* reads CSV fixtures, via rasica-ingestion's
+# own reader (Document 00E §7.2); the library itself never depends on it.
+rasica-ingestion = { path = "../rasica-ingestion", version = "0.1.0" }
+proptest = { workspace = true }
+rstest = { workspace = true }
+criterion = { workspace = true }
+# serde_json is already a workspace dependency (added in Phase 3 for JSON
+# ingestion); reused here, not redeclared, so this crate never resolves a
+# second version. No `serde` dependency is needed: tests/accuracy.rs only
+# deserializes into HashMap<String, HashMap<String, String>>, which serde
+# implements for out of the box — no #[derive] required.
+serde_json = { workspace = true }
+
+[[bench]]
+name = "structural_inference"
+harness = false

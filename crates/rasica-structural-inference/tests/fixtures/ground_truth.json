@@ -1,0 +1,15 @@
+{
+  "customers_ground_truth.csv": {
+    "id": "Identifier",
+    "lifetime_value": "Continuous",
+    "name": "Unclassified",
+    "signup_date": "Temporal",
+    "tier": "Categorical"
+  },
+  "sensor_readings_ground_truth.csv": {
+    "reading_id": "Identifier",
+    "recorded_at": "Temporal",
+    "sensor_status": "Categorical",
+    "temperature_celsius": "Continuous"
+  }
+}

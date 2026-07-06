@@ -147,3 +147,44 @@ fn validates_a_hand_built_dataset_and_flags_a_duplicate_row() {
     fn assert_immutable<T: rasica_core::prelude::Immutable>(_: &T) {}
     assert_immutable(&report);
 }
+
+#[test]
+#[allow(clippy::expect_used, clippy::items_after_statements)]
+fn infers_structural_knowledge_from_a_hand_built_dataset() {
+    use rasica_dataset::{
+        dataset::DatasetBuilder,
+        row::Row,
+        schema::{Column, ColumnType, Schema},
+        source::{SourceFormat, SourceMetadata},
+        value::Value,
+    };
+    use rasica_structural_inference::{infer, VariableRole};
+
+    let schema = Schema::new(vec![
+        Column::new("id", ColumnType::Integer),
+        Column::new("tier", ColumnType::Text),
+    ])
+    .expect("hand-written schema is well-formed");
+
+    let mut builder = DatasetBuilder::new(schema);
+    let tiers = ["bronze", "silver", "gold", "bronze", "silver"];
+    for (i, tier) in tiers.iter().enumerate() {
+        builder
+            .push_row(Row::new(vec![
+                Value::Integer(i64::try_from(i).unwrap_or(i64::MAX)),
+                Value::Text((*tier).into()),
+            ]))
+            .expect("hand-written row matches hand-written schema");
+    }
+    let dataset = builder.build(SourceMetadata::new(SourceFormat::InMemory, "smoke"));
+
+    let knowledge = infer(&dataset, "smoke").expect("hand-built dataset has rows");
+
+    assert_eq!(knowledge.column(0).expect("column 0 exists").role(), VariableRole::Identifier);
+    assert_eq!(knowledge.column(1).expect("column 1 exists").role(), VariableRole::Categorical);
+
+    // Reuses rasica-validation's own smoke assertion pattern (Phase 4):
+    // Structural Knowledge is Tier 1.
+    fn assert_immutable<T: rasica_core::prelude::Immutable>(_: &T) {}
+    assert_immutable(&knowledge);
+}
