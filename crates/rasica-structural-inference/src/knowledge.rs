@@ -67,8 +67,22 @@ impl StructuralKnowledge {
 }
 
 /// The per-column portion of [`StructuralKnowledge`].
+///
+/// GAP FIX (Phase 6 bridging note): `name` is new relative to the
+/// original scaffold. §4.1's "column names are never consulted by any
+/// heuristic" constraint is about *classification* (`role.rs`'s
+/// heuristics remain name-blind, and this field is populated only after
+/// `classify` has already run — see `infer` below); it does not forbid
+/// *storing* the name for a downstream consumer's benefit. Without this
+/// field, a column is identifiable only by position, which left the
+/// Knowledge Engine (Phase 6) needing the original `Dataset` passed
+/// alongside `StructuralKnowledge` just to recover column names for
+/// graph-node labels — and needing to guard against the two arguments
+/// ever referring to different Datasets. Storing `name` here removes
+/// both problems.
 #[derive(Debug, Clone, PartialEq)]
 pub struct ColumnKnowledge {
+    name: String,
     role: VariableRole,
     distribution: Option<DistributionSummary>,
     categories: Option<CategorySummary>,
@@ -82,6 +96,7 @@ impl ColumnKnowledge {
     /// the same "one door in" convention `rasica_dataset::dataset::Dataset`
     /// uses via `DatasetBuilder` (Document 00E §4.5).
     fn new(
+        name: impl Into<String>,
         role: VariableRole,
         distribution: Option<DistributionSummary>,
         categories: Option<CategorySummary>,
@@ -96,7 +111,15 @@ impl ColumnKnowledge {
             role == VariableRole::Categorical,
             "categories must be Some if and only if role is Categorical"
         );
-        Self { role, distribution, categories }
+        Self { name: name.into(), role, distribution, categories }
+    }
+
+    /// This column's name, as declared in the originating Dataset's
+    /// `Schema` (Phase 6 gap fix, §0). Recorded for downstream labelling
+    /// only — no heuristic in `role.rs` reads this field, and none may.
+    #[must_use]
+    pub fn name(&self) -> &str {
+        &self.name
     }
 
     /// This column's structural role.
@@ -195,7 +218,7 @@ pub fn infer(
             identifier_columns.push((index, distinct));
         }
 
-        columns.push(ColumnKnowledge::new(role, distribution, categories));
+        columns.push(ColumnKnowledge::new(column.name(), role, distribution, categories));
     }
 
     let relationships = detect_value_subset_evidence(&identifier_columns);
@@ -228,6 +251,15 @@ mod tests {
     fn empty_dataset_is_rejected() {
         let dataset = dataset_with_rows(ColumnType::Integer, vec![]);
         assert_eq!(infer(&dataset, "test"), Err(InferenceError::EmptyDataset));
+    }
+
+    #[test]
+    #[allow(clippy::expect_used)]
+    fn column_knowledge_carries_the_schema_column_name() {
+        let dataset =
+            dataset_with_rows(ColumnType::Integer, vec![Value::Integer(1), Value::Integer(2)]);
+        let knowledge = infer(&dataset, "test").expect("non-empty dataset infers successfully");
+        assert_eq!(knowledge.column(0).expect("column 0 exists").name(), "col");
     }
 
     #[test]
